@@ -24,14 +24,31 @@
         .grade-bar {
             height: 0;
             opacity: 0;
-            /* Transition for smooth animation when 'animate-on-load' is added */
+            /* Transition for smooth animation */
             transition: height 0.8s ease-out, opacity 0.8s ease-out;
+            /* For absolute positioning of percentage text */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
         }
-        /* Class added by JS to trigger the animation */
-        .grade-bar.animate-on-load {
+        /* Class added by JS to trigger the animation to its target height */
+        .grade-bar.animate-to-target {
             opacity: 1;
-            /* The actual height is set by inline style */
+            /* Height will be set by inline style based on data-target-height */
         }
+
+        /* Percentage text styling for correct positioning */
+        .bar-percentage-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            /* Initial state for animation */
+            opacity: 0;
+            /* bottom property will be set dynamically by JS */
+            white-space: nowrap; /* Prevent text wrapping */
+            transition: opacity 0.5s ease-in 0.6s, bottom 0.8s ease-out; /* Smooth transition */
+            z-index: 20; /* Ensure text is above bars */
+            color: #334155; /* Changed to dark gray for visibility outside the bar */
+        }
+
 
         /* Button and card hover effects */
         .hover-scale:hover {
@@ -128,8 +145,9 @@
                 <div class="flex flex-col space-y-4 text-2xl font-bold"> <!-- Increased font size for menu links -->
                     <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'about')">소개</a>
                     <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'education')">학력</a>
+                    <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'experience')">경력</a>
                     <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'achievements')">학교생활</a>
-                    <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'certificates')">자격증</a> <!-- Certificates section link added -->
+                    <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'certificates')">자격증</a>
                     <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'projects')">프로젝트</a>
                     <a class="text-white hover:text-blue-200 transition duration-300 rounded-md py-3 px-6 hover:bg-blue-700 block text-center cursor-pointer" onclick="scrollToSection(event, 'contact')">연락처</a>
                 </div>
@@ -143,7 +161,7 @@
         <section id="home">
             <div class="max-w-4xl mx-auto">
                 <div class="w-32 h-32 md:w-48 md:h-48 bg-white rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden border-4 border-blue-400 shadow-xl">
-                    <!-- Profile image alt text or actual image -->
+                    <!-- Image of 김용현 profile -->
                     <img src="https://placehold.co/192x192/4299E1/FFFFFF?text=용현" alt="김용현 프로필 이미지" class="w-full h-full object-cover">
                 </div>
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">
@@ -180,6 +198,7 @@
                 <h3 class="text-2xl font-bold text-center mt-16 mb-8 text-blue-800">기술 스택</h3>
                 <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 text-center"> <!-- Changed to 2x2 grid -->
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
+                        <!-- Image of Python Icon -->
                         <img src="https://placehold.co/60x60/8B5CF6/FFFFFF?text=Py" alt="Python Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">Python</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
@@ -187,6 +206,7 @@
                         </div>
                     </div>
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
+                        <!-- Image of C/C++ Icon -->
                         <img src="https://placehold.co/60x60/DC2626/FFFFFF?text=C" alt="C/C++ Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">C/C++</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
@@ -194,14 +214,16 @@
                         </div>
                     </div>
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
-                        <img src="https://placehold.co/60x60/38BDF8/FFFFFF?text=HTML" alt="HTML Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
+                        <!-- Image of HTML Icon -->
+                        <img src="https://placehold.co/600x600/38BDF8/FFFFFF?text=HTML" alt="HTML Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">HTML5</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                             <div class="bg-blue-500 h-2.5 rounded-full" style="width: 75%;"></div>
                         </div>
                     </div>
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
-                        <img src="https://placehold.co/60x60/3B82F6/FFFFFF?text=CSS" alt="CSS Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
+                        <!-- Image of CSS Icon -->
+                        <img src="https://placehold.co/600x600/3B82F6/FFFFFF?text=CSS" alt="CSS Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">CSS3</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                             <div class="bg-blue-500 h-2.5 rounded-full" style="width: 65%;"></div>
@@ -228,6 +250,34 @@
             </div>
         </section>
 
+        <!-- Work Experience Section -->
+        <section id="experience" class="py-16 bg-white shadow-inner">
+            <div class="container mx-auto px-4 max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-800">경력</h2>
+                <div class="space-y-8">
+                    <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg border border-blue-200 hover-scale">
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700 mb-2">알파솔루션즈 시스템엔지니어링팀 인턴</h3>
+                        <p class="text-base sm:text-lg text-gray-700 mb-4">
+                            <span class="font-semibold">기간:</span> 2024년 09월 02일 ~ 2024년 11월 29일
+                        </p>
+                        <p class="text-sm sm:text-md text-gray-600">
+                            시스템 엔지니어링 실무 경험을 쌓고, 서버 및 네트워크 인프라 관리 지원 업무를 수행하며 문제 해결 능력과 팀워크를 향상시켰습니다.
+                        </p>
+                    </div>
+                    <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg border border-blue-200 hover-scale">
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700 mb-2">4LYNX(사명변경) 시스템엔지니어링팀 프로(직급)</h3>
+                        <p class="text-base sm:text-lg text-gray-700 mb-4">
+                            <span class="font-semibold">기간:</span> 2024년 12월 02일 ~ 현재
+                        </p>
+                        <p class="text-sm sm:text-md text-gray-600">
+                            4LYNX에서 시스템 엔지니어링 프로로서 시스템 설계, 구축 및 최적화 업무를 담당하고 있습니다. 안정적인 시스템 운영과 성능 향상에 기여하고 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <!-- School Life and Achievements Section -->
         <section id="achievements" class="py-16 bg-white shadow-inner">
             <div class="container mx-auto px-4">
@@ -242,30 +292,72 @@
                     <div id="awardContent" class="collapsible-content">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-4">
                             <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
-                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">제12회 전국 학생 IT 경진대회</h4>
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">R&DE 해커톤 챌린지</h4>
                                 <p class="text-sm sm:text-base text-gray-700 mb-2">
-                                    <span class="font-semibold">수상:</span> 은상 (2024년 10월)
+                                    <span class="font-semibold">수상:</span> 금상 (1위, 공동 수상 4인)
+                                </p>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상일:</span> 2023년 11월 19일
                                 </p>
                                 <p class="text-xs sm:text-sm text-gray-600">
-                                    팀 프로젝트 '스마트 재활 운동 시스템' 개발에 참여하여 우수한 기술력과 창의성을 인정받았습니다.
+                                    혁신적인 아이디어와 팀워크로 해커톤에서 금상을 수상했습니다.
                                 </p>
                             </div>
                             <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
-                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">교내 코딩 경진대회</h4>
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">체험 활동 보고서 공모전</h4>
                                 <p class="text-sm sm:text-base text-gray-700 mb-2">
-                                    <span class="font-semibold">수상:</span> 최우수상 (2023년 6월)
+                                    <span class="font-semibold">수상:</span> 장려상 (3위, 수학여행 부문)
+                                </p>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상일:</span> 2023년 07월 10일
                                 </p>
                                 <p class="text-xs sm:text-sm text-gray-600">
-                                    효율적인 알고리즘 설계 능력을 바탕으로 제한 시간 내에 문제 해결 능력을 입증했습니다.
+                                    수학여행 체험 활동 보고서의 내용 구성 및 표현의 우수성을 인정받았습니다.
+                                </p>
+                            </div>
+                             <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">R&DE level up 챌린지</h4>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상:</span> 동상 (3위)
+                                </p>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상일:</span> 2023년 07월 17일
+                                </p>
+                                <p class="text-xs sm:text-sm text-gray-600">
+                                    R&DE 프로젝트의 성장과 발전에 기여하여 동상을 수상했습니다.
                                 </p>
                             </div>
                             <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
-                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">학교장 표창</h4>
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">포트폴리오 발표 대회</h4>
                                 <p class="text-sm sm:text-base text-gray-700 mb-2">
-                                    <span class="font-semibold">수상:</span> 모범 학생 표창 (2022년 12월)
+                                    <span class="font-semibold">수상:</span> 동상 (3위)
+                                </p>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상일:</span> 2022년 12월 23일
                                 </p>
                                 <p class="text-xs sm:text-sm text-gray-600">
-                                    학업 성취도 및 학교 봉사 활동에 대한 기여를 인정받아 표창을 수여받았습니다.
+                                    자신이 학습한 내용을 바탕으로 구성한 포트폴리오 발표 능력을 인정받아 동상을 수상했습니다.
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">CUS 아이디어 공모전</h4>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상:</span> 장려상 (3위)
+                                </p>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상일:</span> 2022년 11월 16일
+                                </p>
+                                <p class="text-xs sm:text-sm text-gray-600">
+                                    창의적인 아이디어를 제안하여 공모전에서 장려상을 수상했습니다.
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">학교장 표창 (그린 마일리지 우수 부문)</h4>
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
+                                    <span class="font-semibold">수상일:</span> 2024년 07월 23일 외 다수
+                                </p>
+                                <p class="text-xs sm:text-sm text-gray-600">
+                                    그린 마일리지 우수 부문 등 학교 생활에 적극적으로 참여하고 모범을 보여 다수 수여받은 표창입니다.
                                 </p>
                             </div>
                         </div>
@@ -281,28 +373,28 @@
                     <div id="volunteerContent" class="collapsible-content">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-4">
                             <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
-                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">지역 복지관 IT 교육 봉사</h4>
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">교내 환경 및 행사 지원 봉사</h4>
                                 <p class="text-sm sm:text-base text-gray-700 mb-2">
-                                    <span class="font-semibold">기간:</span> 2023년 3월 - 2024년 2월
+                                    <span class="font-semibold">기간:</span> 2022년 3월 ~ 2024년 8월 (지속적인 참여)
                                 </p>
                                 <p class="text-xs sm:text-sm text-gray-600">
-                                    어르신들을 대상으로 기본적인 컴퓨터 및 스마트폰 활용 교육을 진행하며 디지털 격차 해소에 기여했습니다.
+                                    학교 내외 행사 지원, 오케스트라 악기 관리 및 연습실 청소, 학급 환경 도우미, 비지니스 영어 실습실 관리 등 깨끗하고 활기찬 학교 분위기 조성에 기여했습니다.
                                 </p>
                             </div>
                             <div class="bg-blue-50 p-6 rounded-xl shadow-md border border-blue-200 hover-scale">
-                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">학교 환경 정화 캠페인</h4>
+                                <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">지역 사회 IT 및 사회 봉사</h4>
                                 <p class="text-sm sm:text-base text-gray-700 mb-2">
-                                    <span class="font-semibold">기간:</span> 2022년 9월 - 2022년 11월
+                                    <span class="font-semibold">기간:</span> 2022년 3월 ~ 2024년 5월 (누적 121시간)
                                 </p>
                                 <p class="text-xs sm:text-sm text-gray-600">
-                                    깨끗하고 쾌적한 학교 환경 조성을 위한 캠페인에 적극적으로 참여했습니다.
+                                    대구 예술 발전소 전시 지킴이, 중소기업 홍보 도우미, 요양원 노인 돌봄 및 환경 정리, 어린이날 행사 부스 운영 지원, 도서관 자료실 서가 정리 등 다양한 지역 사회 활동에 참여하여 봉사 정신을 실천했습니다.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Grade Trend Graph (Simulation) -->
+                <!-- Grade Trend Graph -->
                 <div class="mb-6 max-w-4xl mx-auto">
                     <div class="flex items-center justify-between cursor-pointer py-4 px-6 bg-blue-100 rounded-xl shadow-md hover:bg-blue-200 transition duration-300" onclick="toggleSection('gradeContent', this)">
                         <h3 class="text-xl sm:text-2xl font-bold text-blue-700">📈 학년별 주요 과목 성적 추이</h3>
@@ -313,28 +405,68 @@
                             주요 과목들의 학년별 성적 평균을 시각적으로 나타낸 그래프입니다.
                             꾸준한 학습 노력으로 성적 향상을 이루어 왔음을 보여줍니다.
                         </p>
-                        <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg border border-blue-200 max-w-4xl mx-auto">
-                            <div class="flex justify-around items-end h-64 md:h-80">
-                                <!-- Grade 1 Bar: ~85% -->
-                                <div class="flex flex-col items-center w-1/4 md:w-1/5 lg:w-1/6 px-1">
-                                    <div class="bg-blue-400 rounded-t-lg w-full mb-2 grade-bar" style="height: 85%;"></div>
-                                    <span class="text-xs sm:text-sm font-semibold text-blue-800">1학년</span>
+                        <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg border border-blue-200 max-w-4xl mx-auto relative h-64 md:h-80 flex flex-col justify-end">
+                            <div class="flex flex-grow relative"> 
+                                <!-- Y-axis labels on the left -->
+                                <div class="w-12 flex flex-col justify-between text-right text-xs text-gray-600 font-semibold">
+                                    <span>100%</span>
+                                    <span>90%</span>
+                                    <span>80%</span>
+                                    <span>70%</span>
+                                    <span>60%</span>
+                                    <span>50%</span>
+                                    <span>40%</span>
+                                    <span>30%</span>
+                                    <span>20%</span>
+                                    <span>10%</span>
+                                    <span>0%</span>
                                 </div>
-                                <!-- Grade 2 Bar: ~89% -->
-                                <div class="flex flex-col items-center w-1/4 md:w-1/5 lg:w-1/6 px-1">
-                                    <div class="bg-blue-500 rounded-t-lg w-full mb-2 grade-bar" style="height: 89%; animation-delay: 0.2s;"></div>
-                                    <span class="text-xs sm:text-sm font-semibold text-blue-800">2학년</span>
+                                
+                                <!-- Main plotting area: bars and grid lines -->
+                                <div id="plotting-area" class="flex-grow relative h-full">
+                                    <!-- Horizontal Grid Lines -->
+                                    <div class="absolute inset-0 flex flex-col justify-between">
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
+                                    </div>
+
+                                    <!-- Graph bars container -->
+                                    <div class="flex justify-around items-end h-full w-full relative z-10 px-2">
+                                        <!-- Individual bar unit -->
+                                        <div class="flex flex-col items-center justify-end h-full w-1/4 md:w-1/5 lg:w-1/6 relative" data-bar-index="0">
+                                            <span class="bar-percentage-text text-xs font-bold select-none"></span>
+                                            <div class="bg-blue-400 rounded-t-lg w-full grade-bar"></div>
+                                        </div>
+                                        <div class="flex flex-col items-center justify-end h-full w-1/4 md:w-1/5 lg:w-1/6 relative" data-bar-index="1">
+                                            <span class="bar-percentage-text text-xs font-bold select-none"></span>
+                                            <div class="bg-blue-500 rounded-t-lg w-full grade-bar"></div>
+                                        </div>
+                                        <div class="flex flex-col items-center justify-end h-full w-1/4 md:w-1/5 lg:w-1/6 relative" data-bar-index="2">
+                                            <span class="bar-percentage-text text-xs font-bold select-none"></span>
+                                            <div class="bg-blue-600 rounded-t-lg w-full grade-bar"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- Grade 3 Bar: ~91% -->
-                                <div class="flex flex-col items-center w-1/4 md:w-1/5 lg:w-1/6 px-1">
-                                    <div class="bg-blue-600 rounded-t-lg w-full mb-2 grade-bar" style="height: 91%; animation-delay: 0.4s;"></div>
-                                    <span class="text-xs sm:text-sm font-semibold text-blue-800">3학년</span>
-                                </div>
-                                <!-- Can be extended to more grades or subjects -->
                             </div>
-                            <div class="text-center text-xs sm:text-sm text-gray-500 mt-4">
-                                *상대적인 성적 추이를 나타내며, 실제 점수와 다를 수 있습니다.
+                            
+                            <!-- X-axis labels (1학년, 2학년, 3학년) -->
+                            <div class="flex justify-around text-xs sm:text-sm font-semibold text-blue-800 mt-2 ml-12">
+                                <span>1학년</span>
+                                <span>2학년</span>
+                                <span>3학년</span>
                             </div>
+                        </div>
+                        <div class="text-center text-xs sm:text-sm text-gray-500 mt-4">
+                            *상대적인 성적 추이를 나타내며, 실제 점수와 다를 수 있습니다.
                         </div>
                     </div>
                 </div>
@@ -382,7 +514,7 @@
                             </div>
                             <div class="bg-white p-6 rounded-xl shadow-md border border-blue-200 hover-scale mb-4 min-w-0">
                                 <h4 class="text-lg sm:text-xl font-semibold text-blue-800 mb-2">전기기능사</h4>
-                                <p class="text-sm sm:text-base text-gray-700">
+                                <p class="text-sm sm:text-base text-gray-700 mb-2">
                                     <span class="font-semibold">취득일:</span> 2023년 07월 05일
                                 </p>
                                 <p class="text-xs sm:text-sm text-gray-600 mt-2">
@@ -414,7 +546,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
                     <!-- Project Card 1 -->
                     <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
-                        <img src="https://placehold.co/600x350/BEE3F8/2B6CB0?text=스마트+시스템" alt="프로젝트 이미지 1" class="w-full h-40 sm:h-48 object-cover">
+                        <!-- Image of smart system -->
+                        <img src="https://placehold.co/600x350/BEE3F8/2B6CB0?text=스마트+시스템" alt="스마트 시스템 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
                         <div class="p-4 sm:p-6">
                             <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">스마트 홈 자동화 시스템</h3>
                             <p class="text-sm text-gray-600 mb-4">
@@ -432,7 +565,8 @@
                     </div>
                     <!-- Project Card 2 -->
                     <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
-                        <img src="https://placehold.co/600x350/C6F6D5/2F855A?text=웹+서비스" alt="프로젝트 이미지 2" class="w-full h-40 sm:h-48 object-cover">
+                        <!-- Image of web service -->
+                        <img src="https://placehold.co/600x350/C6F6D5/2F855A?text=웹+서비스" alt="교내 도서 대여 웹 서비스 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
                         <div class="p-4 sm:p-6">
                             <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">교내 도서 대여 웹 서비스</h3>
                             <p class="text-sm text-gray-600 mb-4">
@@ -450,7 +584,8 @@
                     </div>
                     <!-- Project Card 3 -->
                     <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
-                        <img src="https://placehold.co/600x350/FED7AA/DD6B20?text=로봇+제어" alt="프로젝트 이미지 3" class="w-full h-40 sm:h-48 object-cover">
+                        <!-- Image of robot control -->
+                        <img src="https://placehold.co/600x350/FED7AA/DD6B20?text=로봇+제어" alt="자율 주행 로봇 제어 시스템 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
                         <div class="p-4 sm:p-6">
                             <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">자율 주행 로봇 제어 시스템</h3>
                             <p class="text-sm text-gray-600 mb-4">
@@ -474,7 +609,7 @@
         <!-- Contact Section -->
         <section id="contact" class="py-16 bg-blue-800 text-white">
             <div class="container mx-auto px-4 max-w-xl text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-blue-200">Contact</h2> <!-- Changed to English -->
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-blue-200">Contact</h2>
                 <p class="text-base sm:text-lg mb-8 leading-relaxed">
                     저의 작업에 관심이 있으시거나 궁금한 점이 있으시면 언제든지 편하게 연락 주세요!
                 </p>
@@ -564,11 +699,16 @@
             if (isExpanded) {
                 content.classList.remove('expanded');
                 arrow.classList.remove('rotated');
-                // Remove animation class and reset height when collapsing to allow re-animation next time
+                // Immediately reset heights and opacity when collapsing
                 if (contentId === 'gradeContent') {
                     content.querySelectorAll('.grade-bar').forEach(bar => {
-                        bar.classList.remove('animate-on-load');
-                        bar.style.height = '0%'; /* Reset height for next animation */
+                        bar.style.height = '0%';
+                        bar.style.opacity = '0';
+                    });
+                    // Also hide percentage texts
+                    content.querySelectorAll('.bar-percentage-text').forEach(text => {
+                        text.style.opacity = '0';
+                        text.style.bottom = '0px'; // Reset position
                     });
                 }
             } else {
@@ -576,18 +716,77 @@
                 arrow.classList.add('rotated');
                 // Trigger animation when expanding
                 if (contentId === 'gradeContent') {
-                    content.querySelectorAll('.grade-bar').forEach((bar, index) => {
-                        const targetHeight = bar.style.height; // Get the target height from inline style
-                        bar.style.height = '0%'; // Ensure it starts from 0 for animation
-                        bar.classList.remove('animate-on-load'); // Remove to re-add later
-                        
-                        // Force reflow
-                        void bar.offsetWidth; 
+                    // Ensure no vertical padding on y-axis labels and grid lines for precise alignment
+                    const yAxisLabels = content.querySelector('.w-12.flex-col');
+                    if (yAxisLabels) yAxisLabels.classList.remove('py-1');
+                    const gridLines = content.querySelector('.absolute.inset-0.flex-col');
+                    if (gridLines) gridLines.classList.remove('py-1');
 
-                        setTimeout(() => {
-                            bar.classList.add('animate-on-load');
-                            bar.style.height = targetHeight; // Apply the target height to trigger transition
-                        }, 100 + (index * 100)); // Stagger animation for each bar
+                    // Get the actual height of the plotting area where bars and lines reside
+                    const plottingArea = document.getElementById('plotting-area');
+                    
+                    const OFFSET_PX_ABOVE_BAR = 10; // Pixels above the bar for the text
+
+                    // Define the grade data
+                    const grades = [
+                        { grade: '1학년', score: 85.4, color: 'bg-blue-400' },
+                        { grade: '2학년', score: 88.3, color: 'bg-blue-500' },
+                        { grade: '3학년', score: 90.6, color: 'bg-blue-600' }
+                    ];
+
+                    // Clear existing bars and texts before drawing new ones
+                    const barsContainer = plottingArea.querySelector('.flex.justify-around');
+                    barsContainer.innerHTML = '';
+
+                    // Get y-axis labels container height for pixel scale
+                    const yAxisContainer = content.querySelector('.w-12.flex-col');
+                    const yAxisContainerHeight = yAxisContainer.clientHeight;
+                    // console.log(`Y-axis container height: ${yAxisContainerHeight}`); // Debugging
+
+                    grades.forEach((data, index) => {
+                        // Create bar container
+                        const barContainer = document.createElement('div');
+                        barContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-end', 'h-full', 'w-1/4', 'md:w-1/5', 'lg:w-1/6', 'relative');
+                        barContainer.setAttribute('data-bar-index', index);
+
+                        // Create percentage text span
+                        const percentageText = document.createElement('span');
+                        percentageText.classList.add('bar-percentage-text', 'text-xs', 'font-bold', 'select-none'); // Color set in CSS
+                        percentageText.textContent = data.score.toFixed(1) + '%'; // Set text content
+
+                        // Create bar div
+                        const bar = document.createElement('div');
+                        bar.classList.add(data.color, 'rounded-t-lg', 'w-full', 'grade-bar');
+                        bar.style.height = '0%'; // Initial height for animation
+                        bar.style.opacity = '0'; // Initial opacity for animation
+
+                        barContainer.appendChild(percentageText);
+                        barContainer.appendChild(bar);
+                        barsContainer.appendChild(barContainer);
+
+                        // Force reflow/repaint immediately after appending and resetting
+                        void bar.offsetWidth; 
+                        void percentageText.offsetWidth; 
+
+                        requestAnimationFrame(() => {
+                            setTimeout(() => {
+                                bar.style.transition = 'height 0.8s ease-out, opacity 0.8s ease-out'; 
+                                
+                                // Calculate target pixel height based on Y-axis container's height for accurate scaling
+                                const targetPixelHeight = (yAxisContainerHeight * (data.score / 100));
+                                bar.style.height = `${targetPixelHeight}px`; // Set height in pixels
+                                bar.style.opacity = '1';
+
+                                // Position percentage text based on calculated pixel height of the bar
+                                // Get the actual rendered height of the percentage text for precise positioning
+                                const textHeight = percentageText.offsetHeight;
+                                percentageText.style.bottom = `${targetPixelHeight + OFFSET_PX_ABOVE_BAR}px`;
+                                
+                                percentageText.style.opacity = '1';
+                                percentageText.style.transition = 'opacity 0.5s ease-in 0.6s, bottom 0.8s ease-out';
+                                                
+                            }, 50 + (index * 100)); // Stagger animation
+                        });
                     });
                 }
             }
