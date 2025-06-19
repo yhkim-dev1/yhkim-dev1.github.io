@@ -26,7 +26,6 @@
             opacity: 0;
             /* Transition for smooth animation */
             transition: height 0.8s ease-out, opacity 0.8s ease-out;
-            /* For absolute positioning of percentage text */
             box-sizing: border-box; /* Include padding and border in the element's total width and height */
         }
         /* Class added by JS to trigger the animation to its target height */
@@ -47,6 +46,30 @@
             transition: opacity 0.5s ease-in 0.6s, bottom 0.8s ease-out; /* Smooth transition */
             z-index: 20; /* Ensure text is above bars */
             color: #334155; /* Changed to dark gray for visibility outside the bar */
+        }
+
+        /* Custom positioning for Y-axis labels to align with lines */
+        .y-axis-label {
+            position: absolute;
+            right: 2px; /* Small offset from the edge */
+            text-align: right;
+            font-weight: 600; /* semibold */
+            color: #475569; /* gray-700 */
+            font-size: 0.75rem; /* text-xs */
+            line-height: 1; /* Ensure no extra line height affects centering */
+            transform: translateY(50%); /* Adjust to center vertically on the line */
+            pointer-events: none; /* Do not block clicks */
+            box-sizing: border-box;
+        }
+
+        /* Custom positioning for Grid lines */
+        .grid-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-bottom: 1px dashed #cbd5e1; /* gray-300 */
+            pointer-events: none; /* Do not block clicks */
+            box-sizing: border-box;
         }
 
 
@@ -125,6 +148,64 @@
         #certificates .itq-date-item .grade-info {
             white-space: nowrap; /* Prevent (A등급) from breaking */
         }
+
+        /* Project Detail Modal Styles */
+        .project-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999; /* Higher than other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .project-modal-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .project-modal-content {
+            background-color: #ffffff;
+            border-radius: 1rem; /* rounded-xl */
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px; /* Max width for larger screens */
+            max-height: 90vh; /* Limit height to viewport */
+            overflow-y: auto; /* Enable scrolling for long content */
+            position: relative;
+            transform: scale(0.9); /* Initial state for animation */
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Soft shadow */
+        }
+
+        .project-modal-overlay.is-open .project-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .project-modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #475569; /* slate-600 */
+            transition: color 0.2s ease-in-out;
+        }
+
+        .project-modal-close-btn:hover {
+            color: #1e3a8a; /* blue-800 */
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -199,7 +280,7 @@
                 <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 text-center"> <!-- Changed to 2x2 grid -->
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
                         <!-- Image of Python Icon -->
-                        <img src="https://placehold.co/60x60/8B5CF6/FFFFFF?text=Py" alt="Python Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
+                        <img src="https://placehold.co/60x60/8B5CF6/FFFFFF?text=Py" alt="Python Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16 rounded-md">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">Python</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                             <div class="bg-blue-500 h-2.5 rounded-full" style="width: 95%;"></div>
@@ -207,7 +288,7 @@
                     </div>
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
                         <!-- Image of C/C++ Icon -->
-                        <img src="https://placehold.co/60x60/DC2626/FFFFFF?text=C" alt="C/C++ Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
+                        <img src="https://placehold.co/60x60/DC2626/FFFFFF?text=C" alt="C/C++ Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16 rounded-md">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">C/C++</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                             <div class="bg-blue-500 h-2.5 rounded-full" style="width: 85%;"></div>
@@ -215,7 +296,7 @@
                     </div>
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
                         <!-- Image of HTML Icon -->
-                        <img src="https://placehold.co/600x600/38BDF8/FFFFFF?text=HTML" alt="HTML Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
+                        <img src="https://placehold.co/600x600/38BDF8/FFFFFF?text=HTML" alt="HTML Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16 rounded-md">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">HTML5</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                             <div class="bg-blue-500 h-2.5 rounded-full" style="width: 75%;"></div>
@@ -223,7 +304,7 @@
                     </div>
                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md hover-scale flex flex-col items-center">
                         <!-- Image of CSS Icon -->
-                        <img src="https://placehold.co/600x600/3B82F6/FFFFFF?text=CSS" alt="CSS Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16">
+                        <img src="https://placehold.co/600x600/3B82F6/FFFFFF?text=CSS" alt="CSS Icon" class="mb-2 sm:mb-3 w-10 h-10 sm:w-16 sm:h-16 rounded-md">
                         <p class="font-semibold text-sm sm:text-lg text-blue-700">CSS3</p>
                         <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                             <div class="bg-blue-500 h-2.5 rounded-full" style="width: 65%;"></div>
@@ -286,7 +367,13 @@
                 <!-- Awards -->
                 <div class="mb-6 max-w-4xl mx-auto">
                     <div class="flex items-center justify-between cursor-pointer py-4 px-6 bg-blue-100 rounded-xl shadow-md hover:bg-blue-200 transition duration-300" onclick="toggleSection('awardContent', this)">
-                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">🏆 수상 경력</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">
+                            <!-- SVG for Trophy Icon -->
+                            <svg class="inline-block w-6 h-6 sm:w-8 sm:h-8 mr-2 -mt-1 align-middle" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1L8 5H6C4.89543 5 4 5.89543 4 7V17C4 18.1046 4.89543 19 6 19H8V21H10V19H14V21H16V19H18C19.1046 19 20 18.1046 20 17V7C20 5.89543 19.1046 5 18 5H16L12 1ZM12 7C13.6569 7 15 8.34315 15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7ZM12 9C11.4477 9 11 9.44772 11 10C11 10.5523 11.4477 11 12 11C12.5523 11 13 10.5523 13 10C13 9.44772 12.5523 9 12 9Z"/>
+                            </svg>
+                            수상 경력
+                        </h3>
                         <span class="text-blue-700 text-2xl sm:text-3xl transition-transform duration-300 transform arrow-icon" id="awardArrow">&darr;</span>
                     </div>
                     <div id="awardContent" class="collapsible-content">
@@ -367,7 +454,14 @@
                 <!-- Volunteer Activities -->
                 <div class="mb-6 max-w-4xl mx-auto">
                     <div class="flex items-center justify-between cursor-pointer py-4 px-6 bg-blue-100 rounded-xl shadow-md hover:bg-blue-200 transition duration-300" onclick="toggleSection('volunteerContent', this)">
-                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">🤝 봉사 활동</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">
+                            <!-- SVG for Handshake Icon -->
+                            <svg class="inline-block w-6 h-6 sm:w-8 sm:h-8 mr-2 -mt-1 align-middle" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.75 3C11.9216 3 11.25 3.67157 11.25 4.5V9.75C11.25 10.5784 11.9216 11.25 12.75 11.25H18C18.8284 11.25 19.5 10.5784 19.5 9.75V4.5C19.5 3.67157 18.8284 3 18 3H12.75ZM5.25 12.75C4.42157 12.75 3.75 13.4216 3.75 14.25V19.5C3.75 20.3284 4.42157 21 5.25 21H10.5C11.3284 21 12 20.3284 12 19.5V14.25C12 13.4216 11.3284 12.75 10.5 12.75H5.25Z"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 12.75C12.6716 12.75 12 13.4216 12 14.25V19.5C12 20.3284 12.6716 21 13.5 21H18.75C19.5784 21 20.25 20.3284 20.25 19.5V14.25C20.25 13.4216 19.5784 12.75 18.75 12.75H13.5ZM6 3C5.17157 3 4.5 3.67157 4.5 4.5V9.75C4.5 10.5784 5.17157 11.25 6 11.25H11.25C12.0784 11.25 12.75 10.5784 12.75 9.75V4.5C12.75 3.67157 12.0784 3 11.25 3H6Z"/>
+                            </svg>
+                            봉사 활동
+                        </h3>
                         <span class="text-blue-700 text-2xl sm:text-3xl transition-transform duration-300 transform arrow-icon" id="volunteerArrow">&darr;</span>
                     </div>
                     <div id="volunteerContent" class="collapsible-content">
@@ -397,7 +491,13 @@
                 <!-- Grade Trend Graph -->
                 <div class="mb-6 max-w-4xl mx-auto">
                     <div class="flex items-center justify-between cursor-pointer py-4 px-6 bg-blue-100 rounded-xl shadow-md hover:bg-blue-200 transition duration-300" onclick="toggleSection('gradeContent', this)">
-                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">📈 학년별 주요 과목 성적 추이</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">
+                            <!-- SVG for Chart Icon -->
+                            <svg class="inline-block w-6 h-6 sm:w-8 sm:h-8 mr-2 -mt-1 align-middle" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M4 2H20C21.1046 2 22 2.89543 22 4V20C22 21.1046 21.1046 22 20 22H4C2.89543 22 2 21.1046 2 20V4C2 2.89543 2.89543 2 4 2ZM4 4V20H20V4H4ZM14 8L16 12H18L14 8ZM6 10L10 14H12L8 10ZM10 16L12 18H14L10 16Z"/>
+                            </svg>
+                            학년별 주요 과목 성적 추이
+                        </h3>
                         <span class="text-blue-700 text-2xl sm:text-3xl transition-transform duration-300 transform arrow-icon" id="gradeArrow">&darr;</span>
                     </div>
                     <div id="gradeContent" class="collapsible-content">
@@ -405,64 +505,35 @@
                             주요 과목들의 학년별 성적 평균을 시각적으로 나타낸 그래프입니다.
                             꾸준한 학습 노력으로 성적 향상을 이루어 왔음을 보여줍니다.
                         </p>
-                        <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg border border-blue-200 max-w-4xl mx-auto relative h-64 md:h-80 flex flex-col justify-end">
-                            <div class="flex flex-grow relative"> 
-                                <!-- Y-axis labels on the left -->
-                                <div class="w-12 flex flex-col justify-between text-right text-xs text-gray-600 font-semibold">
-                                    <span>100%</span>
-                                    <span>90%</span>
-                                    <span>80%</span>
-                                    <span>70%</span>
-                                    <span>60%</span>
-                                    <span>50%</span>
-                                    <span>40%</span>
-                                    <span>30%</span>
-                                    <span>20%</span>
-                                    <span>10%</span>
-                                    <span>0%</span>
-                                </div>
-                                
-                                <!-- Main plotting area: bars and grid lines -->
-                                <div id="plotting-area" class="flex-grow relative h-full">
-                                    <!-- Horizontal Grid Lines -->
-                                    <div class="absolute inset-0 flex flex-col justify-between">
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                        <div class="w-full border-b border-gray-300 border-dashed flex-grow"></div>
-                                    </div>
-
-                                    <!-- Graph bars container -->
-                                    <div class="flex justify-around items-end h-full w-full relative z-10 px-2">
-                                        <!-- Individual bar unit -->
-                                        <div class="flex flex-col items-center justify-end h-full w-1/4 md:w-1/5 lg:w-1/6 relative" data-bar-index="0">
-                                            <span class="bar-percentage-text text-xs font-bold select-none"></span>
-                                            <div class="bg-blue-400 rounded-t-lg w-full grade-bar"></div>
-                                        </div>
-                                        <div class="flex flex-col items-center justify-end h-full w-1/4 md:w-1/5 lg:w-1/6 relative" data-bar-index="1">
-                                            <span class="bar-percentage-text text-xs font-bold select-none"></span>
-                                            <div class="bg-blue-500 rounded-t-lg w-full grade-bar"></div>
-                                        </div>
-                                        <div class="flex flex-col items-center justify-end h-full w-1/4 md:w-1/5 lg:w-1/6 relative" data-bar-index="2">
-                                            <span class="bar-percentage-text text-xs font-bold select-none"></span>
-                                            <div class="bg-blue-600 rounded-t-lg w-full grade-bar"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Main graph container: uses flex to align y-axis labels and plotting area -->
+                        <div class="bg-blue-50 p-6 sm:p-8 rounded-xl shadow-lg border border-blue-200 max-w-4xl mx-auto relative h-64 md:h-80 flex">
+                            <!-- Y-axis labels container -->
+                            <div id="y-axis-labels-container" class="w-12 relative text-right text-xs text-gray-600 font-semibold">
+                                <!-- Y-axis labels will be dynamically added here by JS -->
                             </div>
                             
-                            <!-- X-axis labels (1학년, 2학년, 3학년) -->
-                            <div class="flex justify-around text-xs sm:text-sm font-semibold text-blue-800 mt-2 ml-12">
-                                <span>1학년</span>
-                                <span>2학년</span>
-                                <span>3학년</span>
+                            <!-- Main plotting area: bars and grid lines -->
+                            <div id="plotting-area" class="flex-grow relative h-full">
+                                <!-- Horizontal Grid Lines container -->
+                                <div id="grid-lines-container" class="absolute inset-0">
+                                    <!-- Grid lines will be dynamically added here by JS -->
+                                </div>
+
+                                <!-- Graph bars container -->
+                                <div id="bars-inner-container" class="flex justify-evenly items-end h-full w-full relative z-10">
+                                    <!-- Individual bar units with their percentage texts will be appended here by JS -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- X-axis labels (1학년, 2학년, 3학년) -->
+                        <div class="flex mt-2">
+                            <div class="w-12"></div> <!-- Empty div to match y-axis-labels-container width -->
+                            <div class="flex-grow flex justify-evenly">
+                                <!-- Increased w-1/12 to w-1/8 for better spacing on smaller screens -->
+                                <span class="w-1/8 text-center text-xs sm:text-sm font-semibold text-blue-800">1학년</span>
+                                <span class="w-1/8 text-center text-xs sm:text-sm font-semibold text-blue-800">2학년</span>
+                                <span class="w-1/8 text-center text-xs sm:text-sm font-semibold text-blue-800">3학년</span>
                             </div>
                         </div>
                         <div class="text-center text-xs sm:text-sm text-gray-500 mt-4">
@@ -479,7 +550,13 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-800">자격증</h2>
                 <div class="mb-6 max-w-4xl mx-auto">
                     <div class="flex items-center justify-between cursor-pointer py-4 px-6 bg-blue-100 rounded-xl shadow-md hover:bg-blue-200 transition duration-300" onclick="toggleSection('certificateContent', this)">
-                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">📜 취득 자격증</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-blue-700">
+                            <!-- SVG for Certificate Icon -->
+                            <svg class="inline-block w-6 h-6 sm:w-8 sm:h-8 mr-2 -mt-1 align-middle" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M5 2H19C19.5523 2 20 2.44772 20 3V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V3C4 2.44772 4.44772 2 5 2ZM6 4V20H18V4H6ZM8 6H16V8H8V6ZM8 10H16V12H8V10ZM8 14H16V16H8V14Z"/>
+                            </svg>
+                            취득 자격증
+                        </h3>
                         <span class="text-blue-700 text-2xl sm:text-3xl transition-transform duration-300 transform arrow-icon" id="certificateArrow">&darr;</span>
                     </div>
                     <div id="certificateContent" class="collapsible-content">
@@ -544,9 +621,8 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-800">주요 프로젝트</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
-                    <!-- Project Card 1 -->
+                    <!-- Project Card 1: 스마트 홈 자동화 시스템 (기존) -->
                     <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
-                        <!-- Image of smart system -->
                         <img src="https://placehold.co/600x350/BEE3F8/2B6CB0?text=스마트+시스템" alt="스마트 시스템 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
                         <div class="p-4 sm:p-6">
                             <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">스마트 홈 자동화 시스템</h3>
@@ -557,15 +633,13 @@
                                 <li>역할: 하드웨어 설계 및 제어 소프트웨어 개발</li>
                                 <li>기술: Arduino, Python, Raspberry Pi</li>
                             </ul>
-                            <!-- Removed href="#" -->
-                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer">
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(0)">
                                 자세히 보기 &rarr;
                             </a>
                         </div>
                     </div>
-                    <!-- Project Card 2 -->
+                    <!-- Project Card 2: 교내 도서 대여 웹 서비스 (기존) -->
                     <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
-                        <!-- Image of web service -->
                         <img src="https://placehold.co/600x350/C6F6D5/2F855A?text=웹+서비스" alt="교내 도서 대여 웹 서비스 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
                         <div class="p-4 sm:p-6">
                             <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">교내 도서 대여 웹 서비스</h3>
@@ -576,15 +650,13 @@
                                 <li>역할: 프론트엔드 및 백엔드 개발 참여</li>
                                 <li>기술: HTML, CSS, JavaScript, PHP, MySQL</li>
                             </ul>
-                            <!-- Removed href="#" -->
-                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer">
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(1)">
                                 자세히 보기 &rarr;
                             </a>
                         </div>
                     </div>
-                    <!-- Project Card 3 -->
+                    <!-- Project Card 3: 자율 주행 로봇 제어 시스템 (기존) -->
                     <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
-                        <!-- Image of robot control -->
                         <img src="https://placehold.co/600x350/FED7AA/DD6B20?text=로봇+제어" alt="자율 주행 로봇 제어 시스템 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
                         <div class="p-4 sm:p-6">
                             <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">자율 주행 로봇 제어 시스템</h3>
@@ -595,13 +667,125 @@
                                 <li>역할: 센서 데이터 처리 및 로봇 제어 알고리즘 구현</li>
                                 <li>기술: C++, ROS (Robot Operating System)</li>
                             </ul>
-                            <!-- Removed href="#" -->
-                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer">
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(2)">
                                 자세히 보기 &rarr;
                             </a>
                         </div>
                     </div>
-                    <!-- More project cards can be added here -->
+                    <!-- Project Card 4: 친환경 지능형 자동차 -->
+                    <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
+                        <img src="https://placehold.co/600x350/C5E0B4/2B6CB0?text=친환경+지능형+자동차" alt="친환경 지능형 자동차 프로젝트 이미지" class="w-full h-40 sm:h-48 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">친환경 지능형 자동차 설계</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                창의적 설계 및 문제해결 경진대회에서 친환경 지능형 자동차를 설계하여 최우수상을 수상했습니다.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 text-sm mb-4">
+                                <li>기간: 2023년 1월 27일</li>
+                                <li>기관: 대구가톨릭대학교</li>
+                                <li>결과: 최우수상 (팀)</li>
+                                <li>기술: Embedded Systems, Robotics, Sensor Integration</li>
+                            </ul>
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(3)">
+                                자세히 보기 &rarr;
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project Card 5: 지능형 모빌리티 SW 경진대회 -->
+                    <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
+                        <img src="https://placehold.co/600x350/D1C4E9/512DA8?text=지능형+모빌리티+SW" alt="지능형 모빌리티 SW 경진대회 이미지" class="w-full h-40 sm:h-48 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">지능형 모빌리티 SW 경진대회</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                제2회 지능형 모빌리티 SW 경진대회에서 동상을 수상하며 SW 역량을 선보였습니다.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 text-sm mb-4">
+                                <li>기간: 2023년 7월 18일</li>
+                                <li>기관: 경운대학교</li>
+                                <li>결과: 동상</li>
+                                <li>기술: Python, AI, Machine Learning, Data Analysis</li>
+                            </ul>
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(4)">
+                                자세히 보기 &rarr;
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project Card 6: 전국 백일장 -->
+                    <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
+                        <img src="https://placehold.co/600x350/FFECB3/F57C00?text=전국+백일장" alt="전국 백일장 이미지" class="w-full h-40 sm:h-48 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">전국 초-중-고등학생 백일장</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                제25회 전국 백일장 대회에서 창의적인 글쓰기 실력을 인정받아 가작을 수상했습니다.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 text-sm mb-4">
+                                <li>기간: 2023년 7월 18일</li>
+                                <li>기관: 장애인먼저실천운동부</li>
+                                <li>결과: 가작</li>
+                                <li>기술: Creative Writing, Communication</li>
+                            </ul>
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(5)">
+                                자세히 보기 &rarr;
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project Card 7: 국제 로봇 콘테스트 -->
+                    <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
+                        <img src="https://placehold.co/600x350/B2EBF2/00BCD4?text=국제+로봇+콘테스트" alt="국제 로봇 콘테스트 이미지" class="w-full h-40 sm:h-48 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">2023 국제 로봇 콘테스트</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                한국로봇산업진흥원 주최 국제 로봇 콘테스트에서 팀으로 참가하여 2위를 달성했습니다.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 text-sm mb-4">
+                                <li>기간: 2023년 10월 14일</li>
+                                <li>기관: 한국로봇산업진흥원</li>
+                                <li>결과: 2위 (팀)</li>
+                                <li>기술: Robotics, Microcontrollers, C++, Python</li>
+                            </ul>
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(6)">
+                                자세히 보기 &rarr;
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project Card 8: R&DE 해커톤 챌린지 (중복되지만 요청에 따라 추가) -->
+                    <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
+                        <img src="https://placehold.co/600x350/FFCDD2/D32F2F?text=R%26DE+해커톤+챌린지" alt="R&DE 해커톤 챌린지 이미지" class="w-full h-40 sm:h-48 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">R&DE 해커톤 챌린지</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                구미전자공업고등학교 주최 해커톤에서 혁신적인 아이디어로 금상을 수상했습니다.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 text-sm mb-4">
+                                <li>기간: 2023년 11월 19일</li>
+                                <li>기관: 구미전자공업고등학교</li>
+                                <li>결과: 1위 (금상) (팀)</li>
+                                <li>기술: Problem Solving, Prototyping, IoT, Web Development</li>
+                            </ul>
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(7)">
+                                자세히 보기 &rarr;
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project Card 9: 전자피아노 설계 -->
+                    <div class="bg-white rounded-xl shadow-lg border border-blue-200 overflow-hidden hover-scale">
+                        <img src="https://placehold.co/600x350/B3E5FC/03A9F4?text=전자피아노+설계" alt="전자피아노 설계 이미지" class="w-full h-40 sm:h-48 object-cover">
+                        <div class="p-4 sm:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-700 mb-2">전자피아노 설계</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                2023년 2학기 교과 수업 프로젝트로 전자회로 설계 및 피아노 기능을 구현했습니다.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 text-sm mb-4">
+                                <li>기간: 2023년 2학기</li>
+                                <li>기관: 구미전자공업고등학교 (교과 수업)</li>
+                                <li>결과: 정상 동작</li>
+                                <li>기술: Electronic Circuits, Microcontrollers, C/C++</li>
+                            </ul>
+                            <a class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-300 cursor-pointer" onclick="openProjectModal(8)">
+                                자세히 보기 &rarr;
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -615,7 +799,7 @@
                 </p>
                 <div class="flex justify-center space-x-6 mt-8">
                     <!-- GitHub Link -->
-                    <a href="https://github.com/Davis495" target="_blank" class="hover:text-blue-300 transition duration-300">
+                    <a href="https://github.com/yhkim-dev1" target="_blank" class="hover:text-blue-300 transition duration-300">
                         <!-- GitHub SVG Icon -->
                         <svg class="w-7 h-7 md:w-10 md:h-10 fill-current" viewBox="0 0 24 24">
                             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.2 3.633 17.65 3.633 17.65c-1.087-.744.084-.73.084-.73.954.066 1.458.973 1.458.973 1.065 1.835 2.795 1.305 3.477.998.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.046.138 3.003.404 2.295-1.552 3.3-1.23 3.3-1.23.645 1.653.24 2.873.105 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12z"/>
@@ -630,13 +814,15 @@
                         </svg>
                     </a>
                 </div>
-                <div class="space-y-4 mt-8"> <!-- Group email and phone number to maintain spacing -->
-                    <p class="text-base sm:text-xl">
-                        <span class="font-semibold">이메일:</span> <a href="mailto:yhkim2p1@naver.com" class="text-blue-300 hover:text-blue-100 transition duration-300">yhkim2p1@naver.com</a>
-                    </p>
-                    <p class="text-base sm:text-xl">
-                        <span class="font-semibold">휴대폰:</span> 010-5924-7296
-                    </p>
+                <div class="mt-8 text-xl"> <!-- Increased font size for contact info -->
+                    <div class="flex items-center justify-center mb-2"> <!-- Flex container for each line -->
+                        <span class="font-semibold w-24 text-right pr-2">E-mail:</span> <!-- Fixed width for label, right-aligned -->
+                        <a href="mailto:yhkim2p1@naver.com" class="text-blue-300 hover:text-blue-100 transition duration-300 text-left">yhkim2p1@naver.com</a>
+                    </div>
+                    <div class="flex items-center justify-center"> <!-- Flex container for each line -->
+                        <span class="font-semibold w-24 text-right pr-2">Phone:</span> <!-- Fixed width for label, right-aligned -->
+                        <span class="text-left">010-5924-7296</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -644,11 +830,30 @@
         <!-- Footer -->
         <footer class="bg-blue-900 text-white text-center py-6 text-sm">
             <div class="container mx-auto px-4">
-                &copy; 2025 김용현. All rights reserved.
+                &copy; 2025 Kim,Yong-hyeon. All rights reserved.
             </div>
         </footer>
 
     </main>
+
+    <!-- Project Detail Modal -->
+    <div id="project-detail-modal" class="project-modal-overlay">
+        <div class="project-modal-content">
+            <button class="project-modal-close-btn" id="modal-close-btn">&times;</button>
+            <h3 class="text-2xl md:text-3xl font-bold text-blue-800 mb-4" id="modal-project-title"></h3>
+            <img id="modal-project-image" src="" alt="Project Image" class="w-full h-48 md:h-64 object-cover rounded-md mb-6">
+            <p class="text-base text-gray-700 mb-4" id="modal-project-description"></p>
+            <div class="mb-4">
+                <h4 class="text-lg font-semibold text-blue-700 mb-2">상세 정보:</h4>
+                <ul class="list-disc list-inside text-gray-600" id="modal-project-tech-stack"></ul>
+            </div>
+            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 class="text-lg font-semibold text-blue-700 mb-2">모션 콘텐츠 (예시):</h4>
+                <p class="text-sm text-gray-600">이곳에 프로젝트 관련 동영상이나 인터랙티브 데모와 같은 모션 콘텐츠가 들어갈 수 있습니다.</p>
+                <!-- 실제 모션 콘텐츠는 여기에 iframe, <video> 태그 등으로 삽입될 수 있습니다. -->
+            </div>
+        </div>
+    </div>
 
     <script>
         // Simple script for animation effects (optional)
@@ -701,93 +906,107 @@
                 arrow.classList.remove('rotated');
                 // Immediately reset heights and opacity when collapsing
                 if (contentId === 'gradeContent') {
-                    content.querySelectorAll('.grade-bar').forEach(bar => {
-                        bar.style.height = '0%';
-                        bar.style.opacity = '0';
-                    });
-                    // Also hide percentage texts
-                    content.querySelectorAll('.bar-percentage-text').forEach(text => {
-                        text.style.opacity = '0';
-                        text.style.bottom = '0px'; // Reset position
-                    });
+                    // Clear all dynamically added elements
+                    document.getElementById('y-axis-labels-container').innerHTML = '';
+                    document.getElementById('grid-lines-container').innerHTML = '';
+                    document.getElementById('bars-inner-container').innerHTML = '';
                 }
             } else {
                 content.classList.add('expanded');
                 arrow.classList.add('rotated');
                 // Trigger animation when expanding
                 if (contentId === 'gradeContent') {
-                    // Ensure no vertical padding on y-axis labels and grid lines for precise alignment
-                    const yAxisLabels = content.querySelector('.w-12.flex-col');
-                    if (yAxisLabels) yAxisLabels.classList.remove('py-1');
-                    const gridLines = content.querySelector('.absolute.inset-0.flex-col');
-                    if (gridLines) gridLines.classList.remove('py-1');
-
-                    // Get the actual height of the plotting area where bars and lines reside
+                    // Corrected: Define elements before use
+                    const yAxisLabelsContainer = document.getElementById('y-axis-labels-container');
+                    const gridLinesContainer = document.getElementById('grid-lines-container');
+                    const barsInnerContainer = document.getElementById('bars-inner-container');
                     const plottingArea = document.getElementById('plotting-area');
-                    
-                    const OFFSET_PX_ABOVE_BAR = 10; // Pixels above the bar for the text
 
-                    // Define the grade data
+                    // Clear any existing elements before re-rendering
+                    yAxisLabelsContainer.innerHTML = '';
+                    gridLinesContainer.innerHTML = '';
+                    barsInnerContainer.innerHTML = '';
+
+                    // Define percentage steps
+                    const percentages = Array.from({ length: 11 }, (_, i) => i * 10); // 0, 10, 20 ... 100
+
+                    // Grade data for bars
                     const grades = [
                         { grade: '1학년', score: 85.4, color: 'bg-blue-400' },
                         { grade: '2학년', score: 88.3, color: 'bg-blue-500' },
                         { grade: '3학년', score: 90.6, color: 'bg-blue-600' }
                     ];
 
-                    // Clear existing bars and texts before drawing new ones
-                    const barsContainer = plottingArea.querySelector('.flex.justify-around');
-                    barsContainer.innerHTML = '';
+                    const OFFSET_PX_ABOVE_BAR = 10; // Pixels above the bar for the text
 
-                    // Get y-axis labels container height for pixel scale
-                    const yAxisContainer = content.querySelector('.w-12.flex-col');
-                    const yAxisContainerHeight = yAxisContainer.clientHeight;
-                    // console.log(`Y-axis container height: ${yAxisContainerHeight}`); // Debugging
+                    // Using setTimeout(0) to ensure the DOM has rendered the `expanded` state
+                    // and `plottingArea.clientHeight` reflects its true height.
+                    setTimeout(() => {
+                        const graphDisplayHeight = plottingArea.clientHeight;
+                        // console.log("Calculated Graph display height:", graphDisplayHeight); // Debugging
 
-                    grades.forEach((data, index) => {
-                        // Create bar container
-                        const barContainer = document.createElement('div');
-                        barContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-end', 'h-full', 'w-1/4', 'md:w-1/5', 'lg:w-1/6', 'relative');
-                        barContainer.setAttribute('data-bar-index', index);
+                        // 1. Add Y-axis labels and Grid Lines
+                        percentages.forEach((percent) => {
+                            // Create Y-axis label
+                            const labelSpan = document.createElement('span');
+                            labelSpan.textContent = `${percent}%`;
+                            labelSpan.classList.add('y-axis-label'); // Apply custom CSS class
+                            yAxisLabelsContainer.appendChild(labelSpan); 
+                            
+                            // Calculate bottom position. Adjust by half of label height to center on the line.
+                            // The `transform: translateY(50%)` in CSS takes care of vertical centering.
+                            // So, we just need to set the `bottom` to align the bottom edge of the text's box with the line.
+                            labelSpan.style.bottom = `${(graphDisplayHeight * percent / 100)}px`;
 
-                        // Create percentage text span
-                        const percentageText = document.createElement('span');
-                        percentageText.classList.add('bar-percentage-text', 'text-xs', 'font-bold', 'select-none'); // Color set in CSS
-                        percentageText.textContent = data.score.toFixed(1) + '%'; // Set text content
-
-                        // Create bar div
-                        const bar = document.createElement('div');
-                        bar.classList.add(data.color, 'rounded-t-lg', 'w-full', 'grade-bar');
-                        bar.style.height = '0%'; // Initial height for animation
-                        bar.style.opacity = '0'; // Initial opacity for animation
-
-                        barContainer.appendChild(percentageText);
-                        barContainer.appendChild(bar);
-                        barsContainer.appendChild(barContainer);
-
-                        // Force reflow/repaint immediately after appending and resetting
-                        void bar.offsetWidth; 
-                        void percentageText.offsetWidth; 
-
-                        requestAnimationFrame(() => {
-                            setTimeout(() => {
-                                bar.style.transition = 'height 0.8s ease-out, opacity 0.8s ease-out'; 
-                                
-                                // Calculate target pixel height based on Y-axis container's height for accurate scaling
-                                const targetPixelHeight = (yAxisContainerHeight * (data.score / 100));
-                                bar.style.height = `${targetPixelHeight}px`; // Set height in pixels
-                                bar.style.opacity = '1';
-
-                                // Position percentage text based on calculated pixel height of the bar
-                                // Get the actual rendered height of the percentage text for precise positioning
-                                const textHeight = percentageText.offsetHeight;
-                                percentageText.style.bottom = `${targetPixelHeight + OFFSET_PX_ABOVE_BAR}px`;
-                                
-                                percentageText.style.opacity = '1';
-                                percentageText.style.transition = 'opacity 0.5s ease-in 0.6s, bottom 0.8s ease-out';
-                                                
-                            }, 50 + (index * 100)); // Stagger animation
+                            // Create Grid Line
+                            const gridLineDiv = document.createElement('div');
+                            gridLineDiv.classList.add('grid-line'); // Apply custom CSS class
+                            gridLineDiv.style.bottom = `${graphDisplayHeight * percent / 100}px`; // Align with the label's bottom
+                            gridLinesContainer.appendChild(gridLineDiv);
                         });
-                    });
+
+                        // 2. Add Bars and Percentage Texts
+                        grades.forEach((data, index) => {
+                            const barContainer = document.createElement('div');
+                            barContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-end', 'w-1/5', 'relative'); /* Changed w-1/4 to w-1/5 */
+                            
+                            const percentageText = document.createElement('span');
+                            percentageText.classList.add('bar-percentage-text', 'text-xs', 'font-bold', 'select-none'); // Color defined in CSS
+                            percentageText.textContent = data.score.toFixed(1) + '%';
+                            percentageText.style.opacity = '0'; // Initial opacity for animation
+
+                            const bar = document.createElement('div');
+                            bar.classList.add(data.color, 'rounded-t-lg', 'w-full', 'grade-bar');
+                            bar.style.height = '0px'; // Initial height for animation
+                            bar.style.opacity = '0';
+
+                            barContainer.appendChild(percentageText);
+                            barContainer.appendChild(bar);
+                            barsInnerContainer.appendChild(barContainer);
+
+                            // Force reflow for initial state
+                            void bar.offsetWidth; 
+                            void percentageText.offsetWidth;
+
+                            requestAnimationFrame(() => {
+                                setTimeout(() => {
+                                    bar.style.transition = 'height 0.8s ease-out, opacity 0.8s ease-out';
+                                    // Calculate target pixel height for the bar based on the graph's total display height
+                                    const targetPixelHeight = (graphDisplayHeight * data.score / 100);
+                                    bar.style.height = `${targetPixelHeight}px`;
+                                    bar.style.opacity = '1';
+
+                                    // Position percentage text outside the bar, 10px from the top edge.
+                                    const textHeight = percentageText.offsetHeight; // Get actual height after content is set
+                                    percentageText.style.bottom = `${targetPixelHeight + OFFSET_PX_ABOVE_BAR}px`;
+                                    
+                                    percentageText.style.opacity = '1';
+                                    percentageText.style.transition = 'opacity 0.5s ease-in 0.6s, bottom 0.8s ease-out';
+                                                    
+                                }, 50 + (index * 100)); // Stagger animation
+                            });
+                        });
+                    }, 0); // Allow DOM to update and elements to have correct clientHeight
                 }
             }
         }
@@ -827,6 +1046,181 @@
                     }
                 }
             };
+
+            // Project Data
+            const projectData = [
+                {
+                    title: "스마트 홈 자동화 시스템",
+                    description: "아두이노와 파이썬을 활용하여 조명, 온도, 보안 등을 제어하는 스마트 홈 시스템을 구축했습니다.",
+                    details: "이 프로젝트는 아두이노를 기반으로 한 하드웨어 제어와 라즈베리 파이에서 실행되는 파이썬 소프트웨어의 통합을 통해 스마트 홈 환경을 구현했습니다. 센서 데이터를 실시간으로 수집하고, 웹 인터페이스를 통해 사용자가 원격으로 조명, 온도, 보안 시스템(예: 침입 감지)을 제어할 수 있도록 설계되었습니다. 특히, 사용자 친화적인 인터페이스와 안정적인 통신 프로토콜 구현에 중점을 두었습니다.",
+                    techStack: ["Arduino", "Python", "Raspberry Pi", "HTML", "CSS", "JavaScript"],
+                    image: "https://placehold.co/600x350/BEE3F8/2B6CB0?text=스마트+시스템",
+                    fullImage: "https://placehold.co/800x450/BEE3F8/2B6CB0?text=스마트+시스템+확대",
+                    period: "", // Added empty strings for consistency
+                    organization: "",
+                    result: ""
+                },
+                {
+                    title: "교내 도서 대여 웹 서비스",
+                    description: "학생들이 도서를 쉽게 검색하고 대여할 수 있는 반응형 웹 서비스를 개발했습니다.",
+                    details: "교내 도서 대여 웹 서비스는 학생들이 보유 도서를 검색하고 대여/반납을 관리할 수 있도록 개발되었습니다. 프론트엔드는 HTML, CSS, JavaScript를 사용하여 반응형 디자인을 구현하여 다양한 기기에서 원활하게 접근 가능하며, 백엔드는 PHP와 MySQL 데이터베이스를 활용하여 도서 정보 관리, 사용자 인증, 대여 기록 관리 기능을 제공합니다. 사용자 경험(UX)을 최적화하기 위해 직관적인 검색 기능과 간소화된 대여 절차를 목표로 했습니다.",
+                    techStack: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+                    image: "https://placehold.co/600x350/C6F6D5/2F855A?text=웹+서비스",
+                    fullImage: "https://placehold.co/800x450/C6F6D5/2F855A?text=도서+웹+서비스+확대",
+                    period: "", // Added empty strings for consistency
+                    organization: "",
+                    result: ""
+                },
+                {
+                    title: "자율 주행 로봇 제어 시스템",
+                    description: "센서 데이터를 활용하여 장애물을 회피하고 특정 경로를 따라 이동하는 로봇을 개발했습니다.",
+                    details: "이 프로젝트는 로봇 운영 체제(ROS)와 C++을 사용하여 자율 주행 로봇을 제어하는 시스템을 개발하는 것이었습니다. 로봇에 장착된 초음파 센서와 라이다(LiDAR) 센서로부터 데이터를 수집하고, 이를 기반으로 실시간으로 장애물을 감지 및 회피하며, 미리 설정된 경로를 따라 이동하는 알고리즘을 구현했습니다. 로봇의 정밀한 위치 인식과 동적 경로 계획에 대한 심층적인 학습과 적용이 이루어졌습니다.",
+                    techStack: ["C++", "ROS (Robot Operating System)", "Sensor Integration"],
+                    image: "https://placehold.co/600x350/FED7AA/DD6B20?text=로봇+제어",
+                    fullImage: "https://placehold.co/800x450/FED7AA/DD6B20?text=로봇+제어+확대",
+                    period: "", // Added empty strings for consistency
+                    organization: "",
+                    result: ""
+                },
+                // New projects added below
+                {
+                    title: "친환경 지능형 자동차의 창의적 설계 외 문제해결 경진대회",
+                    description: "대구가톨릭대학교에서 주최한 경진대회에서 친환경 지능형 자동차를 설계하여 최우수상을 수상했습니다.",
+                    details: "이 대회는 친환경 기술과 지능형 제어 시스템을 융합한 자동차를 창의적으로 설계하고, 주어진 문제 상황을 해결하는 능력을 평가했습니다. 팀원들과 협력하여 차량의 에너지 효율을 높이고 자율 주행 기능을 구현하는 데 중점을 두었으며, 시스템 통합 및 센서 데이터 처리 기술을 활용했습니다.",
+                    period: "2023년 1월 27일",
+                    organization: "대구가톨릭대학교",
+                    result: "최우수상 (팀)",
+                    techStack: ["Embedded Systems", "Robotics", "Sensor Integration", "C++", "Arduino"],
+                    image: "https://placehold.co/600x350/C5E0B4/2B6CB0?text=친환경+지능형+자동차",
+                    fullImage: "https://placehold.co/800x450/C5E0B4/2B6CB0?text=친환경+지능형+자동차+확대",
+                },
+                {
+                    title: "제2회 지능형 모빌리티 SW 경진대회",
+                    description: "경운대학교에서 주최한 지능형 모빌리티 SW 경진대회에서 동상을 수상했습니다.",
+                    details: "이 경진대회는 미래 모빌리티 기술의 핵심인 소프트웨어 개발 역량을 겨루는 자리였습니다. 인공지능 기반의 경로 탐색 알고리즘을 구현하고, 모빌리티 시뮬레이션 환경에서 최적의 주행 전략을 개발하는 데 집중했습니다. Python과 머신러닝 라이브러리를 활용하여 데이터 분석 및 예측 모델을 구축하는 경험을 쌓았습니다.",
+                    period: "2023년 7월 18일",
+                    organization: "경운대학교",
+                    result: "동상",
+                    techStack: ["Python", "AI", "Machine Learning", "Data Analysis", "Simulation"],
+                    image: "https://placehold.co/600x350/D1C4E9/512DA8?text=지능형+모빌리티+SW",
+                    fullImage: "https://placehold.co/800x450/D1C4E9/512DA8?text=지능형+모빌리티+SW+확대",
+                },
+                {
+                    title: "제25회 전국 초-중-고등학생 백일장",
+                    description: "장애인먼저실천운동부에서 주최한 전국 백일장 대회에서 가작을 수상하며 글쓰기 실력을 인정받았습니다.",
+                    details: "이 백일장 대회는 특정 주제에 대한 창의적인 사고와 표현력을 평가하는 자리였습니다. 주어진 주제에 맞춰 논리적이고 감성적인 글을 구성하는 연습을 통해 문해력과 의사소통 능력을 향상시켰습니다. 기술적인 프로젝트는 아니지만, 아이디어를 명확하게 전달하는 능력은 소프트웨어 개발에서도 중요하다고 생각합니다.",
+                    period: "2023년 7월 18일",
+                    organization: "장애인먼저실천운동부",
+                    result: "가작",
+                    techStack: ["Creative Writing", "Communication Skills", "Logical Thinking"],
+                    image: "https://placehold.co/600x350/FFECB3/F57C00?text=전국+백일장",
+                    fullImage: "https://placehold.co/800x450/FFECB3/F57C00?text=전국+백일장+확대",
+                },
+                {
+                    title: "2023 국제 로봇 콘테스트",
+                    description: "한국로봇산업진흥원에서 주최한 국제 로봇 콘테스트에 팀으로 참가하여 2위를 달성했습니다.",
+                    details: "이 콘테스트에서는 로봇이 특정 미션을 수행하는 능력을 겨루었습니다. 로봇의 하드웨어 설계부터 센서 데이터 처리, 제어 알고리즘 구현까지 전반적인 과정을 팀원들과 함께 수행했습니다. 특히 복잡한 환경에서의 로봇 자율 이동 및 물체 인식을 위한 프로그래밍에 주력했으며, C++과 Python을 사용하여 효율적인 코드 작성을 연습했습니다.",
+                    period: "2023년 10월 14일",
+                    organization: "한국로봇산업진흥원",
+                    result: "2위 (팀)",
+                    techStack: ["Robotics", "Microcontrollers", "C++", "Python", "Sensor Fusion"],
+                    image: "https://placehold.co/600x350/B2EBF2/00BCD4?text=국제+로봇+콘테스트",
+                    fullImage: "https://placehold.co/800x450/B2EBF2/00BCD4?text=국제+로봇+콘테스트+확대",
+                },
+                {
+                    title: "R&DE 해커톤 챌린지",
+                    description: "구미전자공업고등학교에서 주최한 R&DE 해커톤 챌린지에서 혁신적인 아이디어로 1위(금상)를 수상했습니다.",
+                    details: "이 해커톤에서는 짧은 시간 내에 아이디어를 구체화하고 프로토타입을 개발하는 능력을 요구했습니다. IoT 기술을 활용한 스마트 솔루션 개발을 목표로, 아이디어 구상부터 기획, 디자인, 개발, 발표까지 전 과정을 팀으로 진행했습니다. 문제 해결 능력과 빠른 학습 능력을 발휘하여 성공적으로 프로젝트를 완수했습니다.",
+                    period: "2023년 11월 19일",
+                    organization: "구미전자공업고등학교",
+                    result: "1위 (금상) (팀)",
+                    techStack: ["Problem Solving", "Prototyping", "IoT", "Web Development", "Team Collaboration"],
+                    image: "https://placehold.co/600x350/FFCDD2/D32F2F?text=R%26DE+해커톤+챌린지",
+                    fullImage: "https://placehold.co/800x450/FFCDD2/D32F2F?text=R%26DE+해커톤+챌린지+확대",
+                },
+                {
+                    title: "전자피아노 설계",
+                    description: "2023년 2학기 교과 수업 프로젝트로 전자회로를 설계하고 전자피아노를 성공적으로 구현했습니다.",
+                    details: "이 프로젝트는 전자회로의 기초 지식을 바탕으로 실제 작동하는 전자피아노를 설계하고 제작하는 것이 목표였습니다. 마이크로컨트롤러를 사용하여 건반 입력에 따른 음정 출력을 제어하고, 기본적인 오디오 출력 회로를 구성했습니다. 회로 설계부터 PCB 레이아웃, 펌웨어 프로그래밍까지 전반적인 임베디드 시스템 개발 과정을 경험하며 하드웨어와 소프트웨어의 연동을 이해하는 데 큰 도움이 되었습니다.",
+                    period: "2023년 2학기",
+                    organization: "구미전자공업고등학교 (교과 수업)",
+                    result: "정상 동작",
+                    techStack: ["Electronic Circuits", "Microcontrollers", "C/C++", "Embedded Systems"],
+                    image: "https://placehold.co/600x350/B3E5FC/03A9F4?text=전자피아노+설계",
+                    fullImage: "https://placehold.co/800x450/B3E5FC/03A9F4?text=전자피아노+설계+확대",
+                }
+            ];
+
+            const modalOverlay = document.getElementById('project-detail-modal');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modalTitle = document.getElementById('modal-project-title');
+            const modalImage = document.getElementById('modal-project-image');
+            const modalDescription = document.getElementById('modal-project-description');
+            const modalTechStack = document.getElementById('modal-project-tech-stack');
+
+            window.openProjectModal = function(index) {
+                const project = projectData[index];
+                if (!project) return;
+
+                modalTitle.textContent = project.title;
+                modalImage.src = project.fullImage;
+                modalImage.alt = project.title + " 이미지";
+                modalDescription.textContent = project.details;
+
+                // Clear previous tech stack items
+                modalTechStack.innerHTML = '';
+                // Add project-specific details (기간, 기관, 결과, 기술)
+                const detailItems = [
+                    { label: '기간', value: project.period },
+                    { label: '기관', value: project.organization },
+                    { label: '결과', value: project.result },
+                ];
+                detailItems.forEach(item => {
+                    if (item.value) { // Only add if value exists
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${item.label}: ${item.value}`;
+                        modalTechStack.appendChild(listItem);
+                    }
+                });
+
+                // Add tech stack
+                if (project.techStack && project.techStack.length > 0) {
+                    const techStackTitle = document.createElement('li');
+                    techStackTitle.classList.add('font-semibold', 'mt-2', 'mb-1');
+                    techStackTitle.textContent = "사용 기술:";
+                    modalTechStack.appendChild(techStackTitle);
+                    project.techStack.forEach(tech => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = tech;
+                        modalTechStack.appendChild(listItem);
+                    });
+                }
+
+
+                modalOverlay.classList.add('is-open');
+                document.body.classList.add('overflow-hidden'); // Disable body scroll
+            };
+
+            const closeProjectModal = () => {
+                modalOverlay.classList.remove('is-open');
+                document.body.classList.remove('overflow-hidden'); // Re-enable body scroll
+            };
+
+            modalCloseBtn.addEventListener('click', closeProjectModal);
+
+            // Close modal when clicking outside the content
+            modalOverlay.addEventListener('click', (event) => {
+                if (event.target === modalOverlay) {
+                    closeProjectModal();
+                }
+            });
+
+            // Close modal when pressing the Escape key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modalOverlay.classList.contains('is-open')) {
+                    closeProjectModal();
+                }
+            });
         });
     </script>
 </body>
